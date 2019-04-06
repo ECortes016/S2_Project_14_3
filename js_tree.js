@@ -5,8 +5,8 @@
    Tutorial 12
    Case Problem 3
 
-   Author: 
-   Date:   
+   Author: Emmanuel Cortes Castaneda
+   Date: 4.5.19
 
    Filename: js_tree.js
 
@@ -37,12 +37,21 @@
       node and false if it doesn't
 */
 
+// Each one of these variables are set to an initial value of 0
+var nodeCount = 0;
+var elementCount = 0;
+var textCount = 0;
+var wsCount = 0;
+
+// Upon the window loading up the makeTree function will be ran
+window.onload = makeTree;
 
 
-
-
-
+function makeTree() {
+      var aside = document.createElement("aside").setAttribute("id", "treeBox");
+      var h1 = document.createAttribute("h1", "Node Tree")
+}
 
 function isWhiteSpaceNode(tString) {
-   return !(/[^\t\n\r ]/.test(tString));
+      return !(/[^\t\n\r ]/.test(tString));
 }
