@@ -48,8 +48,47 @@ window.onload = makeTree;
 
 
 function makeTree() {
-      var aside = document.createElement("aside").setAttribute("id", "treeBox");
-      var h1 = document.createAttribute("h1", "Node Tree")
+      var aside = document.createElement("aside");
+      aside.setAttribute("id", "treeBox");
+      var h1 = document.createElement("h1");
+      h1.textContent = "Node Tree";
+      aside.appendChild(h1);
+      document.getElementById("main").appendChild(aside);
+
+      var nodeList = document.createElement("ol");
+      aside.appendChild(nodeList);
+      var sourceArticle = document.querySelectorAll("#main article");
+
+      makeBranches(sourceArticle, nodeList);
+}
+
+function makeBranches(treeNode, nestedList) {
+      nodeCount += 1;
+
+      var liElem = document.createElement("li");
+      var spanElem = document.createElement("span");
+      var cont = document.createTextNode("+--");
+      liElem.appendChild(cont);
+      liElem.appendChild(spanElem);
+      nestedList.appendChild(liElem);
+
+      if (treeNode.nodeType === 1) {
+            elementCount++;
+            spanElem.class = "elementNode";
+            spanElem.textContent = "<" + treeNode.nodeName + ">";
+      } else if (treeNode.nodeType === 3) {
+            elementCount += 1;
+            var textString = treeNode.textNode;
+
+
+            if (isWhiteSpaceNode(textString) === true) {
+                  wsCount += 1;
+                  spanElem.class = "whiteSpaceNode";
+                  var text = document.createTextNode("#text");
+
+                  spanElem.appendChild(text);
+            }
+      }
 }
 
 function isWhiteSpaceNode(tString) {
