@@ -30,7 +30,7 @@
       Makes a list item or an ordered list based on the contents and type
       of node from the sourceNode parameter and then appends that list
       item or ordered list to nestedList. The function recursively calls 
-      itself to navigate throught the node tree of the source document.
+      itself to navigate throughout the node tree of the source document.
 
    isWhiteSpaceNode(tString)
       Returns true if tString represents the text of a white space text
@@ -39,7 +39,7 @@
 
 // Each one of these variables are set to an initial value of 0
 var nodeCount = 0;
-var elementCount = 0;
+var elemCount = 0;
 var textCount = 0;
 var wsCount = 0;
 
@@ -57,36 +57,53 @@ function makeTree() {
 
       var nodeList = document.createElement("ol");
       aside.appendChild(nodeList);
-      var sourceArticle = document.querySelectorAll("#main article");
+      var sourceArticle = document.querySelector("#main article");
 
       makeBranches(sourceArticle, nodeList);
+
+      document.getElementById('totalNodes').textContent = nodeCount;
+      document.getElementById('elemNodes').textContent = elemCount;
+      document.getElementById('textNodes').textContent = textCount;
+      document.getElementById('wsNodes').textContent = wsCount;
+
 }
 
 function makeBranches(treeNode, nestedList) {
-      nodeCount += 1;
+      nodeCount++;
 
       var liElem = document.createElement("li");
+      liElem.innerHTML += "+--";
       var spanElem = document.createElement("span");
-      var cont = document.createTextNode("+--");
-      liElem.appendChild(cont);
+
+
       liElem.appendChild(spanElem);
       nestedList.appendChild(liElem);
 
       if (treeNode.nodeType === 1) {
-            elementCount++;
-            spanElem.class = "elementNode";
+            elemCount++;
+            spanElem.setAttribute("class", "elementNode");
             spanElem.textContent = "<" + treeNode.nodeName + ">";
       } else if (treeNode.nodeType === 3) {
-            elementCount += 1;
-            var textString = treeNode.textNode;
-
-
+            textCount++;
+            var textString = treeNode.nodeValue;
+            //good
             if (isWhiteSpaceNode(textString) === true) {
-                  wsCount += 1;
-                  spanElem.class = "whiteSpaceNode";
-                  var text = document.createTextNode("#text");
+                  wsCount++;
+                  spanElem.setAttribute("class", "whiteSpaceNode");
+                  spanElem.textContent = "#text";
+            } else if (isWhiteSpaceNode(textString) === false) {
+                  spanElem.setAttribute("class", "textNode");
+                  spanElem.textContent = textString;
+            }
+      }
+      //good
+      if (treeNode.childNodes.length > 0) {
+            var newList = document.createElement("ol");
+            newList.innerHTML = "|";
+            nestedList.appendChild(newList);
 
-                  spanElem.appendChild(text);
+            for (var n = treeNode.firstChild; n !== null; n = n.nextSibling) {
+                  makeBranches(n, newList);
             }
       }
 }
